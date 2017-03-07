@@ -25,18 +25,23 @@ function Renner(naam, achternaam, uren, minuten, gender) {
     this.gender = gender;
 }
 
-function toonRenners() {
+function toonRenners(callback) {
     // Use connect method to connect to the server
     mongoClient.connect(url, function (err, db) {
         console.log("Connected successfully to server");
-        // Get the restaurants collection
+        // Get the renners collection
         var collection = db.collection('renners');
         // Find all documents
         collection.find().toArray(function (err, docs) {
-            console.log("Renner document(s) found:");
-            docs.forEach(function (element) {
-                console.log('%s (%s), %s', element.naam, element.achternaam, element.uren, element.minuten, element.gender);
-            });
+            if (!err) {
+                var result = JSON.stringify(docs);
+                callback(null, result);
+            }
+            else {
+                console.log('Error while performing query.');
+                console.log("Fout");
+                callback(err, {});
+            }
             db.close();
         });
     });
@@ -63,13 +68,14 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
-app.get('/index.html', function(vraag, antwoord) {
-    antwoord.sendFile(path.join(__dirname + '/index.html'));
+app.get('/index.html', function(request, response) {
+    response.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/list/', function(request, response) {
-    response.send(JSON.stringify(deelnemers));
-    toonRenners();
+app.get('/list', function(request, response) {
+   toonRenners(function(foutjes, resultaat) {
+        response.send(resultaat);
+    });
 });
 
 app.post('/addRunner', function (request, response) {
