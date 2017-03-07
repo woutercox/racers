@@ -43,6 +43,10 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
+app.get('/index.html', function(vraag, antwoord) {
+    antwoord.sendFile(path.join(__dirname + '/index.html'));
+});
+
 app.get('/list/', function(request, response) {
     response.send(JSON.stringify(deelnemers));
 });
@@ -50,9 +54,9 @@ app.get('/list/', function(request, response) {
 app.post('/addRunner', function (request, response) {
     console.log("We gaan een renner toevoegen");
      deelnemers.push(
-         new Renner(nieuweDeelnemer.naam, nieuweDeelnemer.achternaam, nieuweDeelnemer.geslacht, nieuweDeelnemer.uren, nieuweDeelnemer.minuten, nieuweDeelnemer.gender)
+         new Renner(request.body.naam, request.body.achternaam, request.body.geslacht, request.body.uren, request.body.minuten, request.body.gender)
      )
-     response.end('{"message" : "Added Successfully", "status" : 200}' + deelnemers[deelnemers.length-1].naam);
+     response.end('{"message" : "Added Successfully", "status" : 200}. Naam toegevoegde deelnemer:' + deelnemers[deelnemers.length-1].naam);
 });
 
 // Listen on port
