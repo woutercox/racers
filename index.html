@@ -6,96 +6,37 @@
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/functions.js"></script>
         <script>
             'use strict'
             window.onload = init;
             function init(){
-                document.getElementById('btn').addEventListener('click', function(event){
-                    event.preventDefault();
-                    var xml = new XMLHttpRequest();
-                    xml.open('POST', 'http://localhost:8081/addRunner');
-                    xml.onreadystatechange = function(){
-                        if (xml.status == 200)
-                            {
-                                if (xml.readyState == 0)
-                                    {
-                                        var balk = document.createElement('progress');
-                                        balk.setAttribute('min', 0);
-                                        balk.setAttribute('max', 0);
-                                        balk.setAttribute('id', 'pro');
-                                        balk.setAttribute('class', 'progress-bar');
-                                        document.getElementById('balk').appendChild(balk);
-                                    }
-                                else 
-                                    {
-                                        document.getElementById('id').value = xml.readyState * 25
-                                       
-                                    }
-                                if (xml.readyState == 4){
-                                     document.getElementById('btn').removeAttribute('class');
-                                     document.getElementById('btn').setAttribute('class', 'btn btn-success')
-                                }
-                            }
-                        if (xml.status == 404)
-                            {
-                                document.getElementById('btn').removeAttribute('class');
-                                document.getElementById('btn').setAttribute('class', 'btn btn-danger')
-                            }
-                        if (xml.status == 500)
-                            {
-                                document.getElementById('btn').removeAttribute('class');
-                                document.getElementById('btn').setAttribute('class', 'btn btn-error')
-                            }
+               for (var a of document.getElementsByTagName('a'))
+                    {
+                        a.addEventListener('click', function(e){
+                            getNewPage(e.srcElement.getAttribute('url'));
+                        })
                     }
-                    var name = document.getElementById('name').value;
-                    var lastname = document.getElementById('lastname').value;
-                    var hour = document.getElementById('hour').value;
-                    var minutes = document.getElementById('minutes').value;
-                    var gender = document.getElementById('gender').value;
-                    xml.send('name='+name
-                    +'&lastname='+lastname
-                    +'&hour='+hour
-                    +'&minutes='+minutes
-                    +'&gender='+gender
-                    );
-                })
+            };
+            function getNewPage(url){
+                console.log(url);
             }
-            
         </script>
     </head>
     <body>
         <div class="container-fluid text-center">
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <input type="text" class="form-control" id="name" placeholder="Naam loper" />
+                    <ul class="nav nav-tabs">
+                        <li><a url="male" id="1">Male finishers</a></li>
+                        <li><a url="female" id="2">Female finishers</a></li>
+                        <li><a url="all" id="3">All finishers</a></li>
+                        <li><a url="new" id="4" >Insert new finisher</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <input type="text" class="form-control" id="lastname" placeholder="Achternaam loper" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <input type="number" class="form-control col-sm-6" id="hour" placeholder="Uren" />
-                    <input type="number" class="form-control col-sm-6" id="minutes" placeholder="Minuten" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <select name="gender" id="gender" class="form-control">
-                        <option value="male">Man</option>
-                        <option value="female">Vrouw</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1 text-center">
-                    <button id="btn" class="btn btn-primary">Invoeren</button>
-                </div>
-                <div id="balk">
-
-                </div>
+            <div id="content">
+                
             </div>
         </div>
     </body>
