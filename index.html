@@ -13,7 +13,7 @@
                 document.getElementById('btn').addEventListener('click', function(event){
                     event.preventDefault();
                     var xml = new XMLHttpRequest();
-                    xml.open('POST', 'http://localhost:8081');
+                    xml.open('POST', 'http://localhost:8081/addRunner');
                     xml.onreadystatechange = function(){
                         if (xml.status == 200)
                             {
