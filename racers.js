@@ -9,8 +9,11 @@ var express = require('express');
 var app = express();
 var mongoClient = require('mongodb').MongoClient;
 var path = require("path");
-var url = require("url");
 var bodyParser = require('body-parser');
+
+// MongoDB Connection URL
+var url = 'mongodb://localhost:27017/test';
+
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,6 +23,28 @@ function Renner(naam, achternaam, uren, minuten, gender) {
     this.uren = uren;
     this.minuten = minuten;
     this.gender = gender;
+}
+
+function toonRenners(callback) {
+    // Use connect method to connect to the server
+    mongoClient.connect(url, function (err, db) {
+        console.log("Connected successfully to server");
+        // Get the renners collection
+        var collection = db.collection('renners');
+        // Find all documents
+        collection.find().toArray(function (err, docs) {
+            if (!err) {
+                var result = JSON.stringify(docs);
+                callback(null, result);
+            }
+            else {
+                console.log('Error while performing query.');
+                console.log("Fout");
+                callback(err, {});
+            }
+            db.close();
+        });
+    });
 }
 
 var deelnemers = [
@@ -43,12 +68,14 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
-app.get('/index.html', function(vraag, antwoord) {
-    antwoord.sendFile(path.join(__dirname + '/index.html'));
+app.get('/index.html', function(request, response) {
+    response.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/list/', function(request, response) {
-    response.send(JSON.stringify(deelnemers));
+app.get('/list', function(request, response) {
+   toonRenners(function(foutjes, resultaat) {
+        response.send(resultaat);
+    });
 });
 
 app.post('/addRunner', function (request, response) {
