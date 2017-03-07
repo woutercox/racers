@@ -23,7 +23,7 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
-app.get('/', function(vraag, antwoord) {
+app.get('/list/', function(vraag, antwoord) {
     antwoord.send(deelnemers);
 });
 
