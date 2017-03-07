@@ -9,8 +9,11 @@ var express = require('express');
 var app = express();
 var mongoClient = require('mongodb').MongoClient;
 var path = require("path");
-var url = require("url");
 var bodyParser = require('body-parser');
+
+// MongoDB Connection URL
+var url = 'mongodb://localhost:27017/test';
+
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,6 +23,23 @@ function Renner(naam, achternaam, uren, minuten, gender) {
     this.uren = uren;
     this.minuten = minuten;
     this.gender = gender;
+}
+
+function toonRenners() {
+    // Use connect method to connect to the server
+    mongoClient.connect(url, function (err, db) {
+        console.log("Connected successfully to server");
+        // Get the restaurants collection
+        var collection = db.collection('renners');
+        // Find all documents
+        collection.find().toArray(function (err, docs) {
+            console.log("Renner document(s) found:");
+            docs.forEach(function (element) {
+                console.log('%s (%s), %s', element.naam, element.achternaam, element.uren, element.minuten, element.gender);
+            });
+            db.close();
+        });
+    });
 }
 
 var deelnemers = [
@@ -49,6 +69,7 @@ app.get('/index.html', function(vraag, antwoord) {
 
 app.get('/list/', function(request, response) {
     response.send(JSON.stringify(deelnemers));
+    toonRenners();
 });
 
 app.post('/addRunner', function (request, response) {
