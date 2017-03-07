@@ -12,8 +12,10 @@ var path = require("path");
 var url = require("url");
 
 var deelnemers = [
-    {naam: "Piet", achternaam: "Piraat", tijd: 4.04}, {naam: "Gobelijn", achternaam: "Professor", tijd: 24.04},
-    {naam: "Speedy", achternaam: "Gonzalez", tijd: 2.04}
+    {naam: "Piet", achternaam: "Piraat", uren: 4, minuten: 4, gender: "man"}, {naam: "Gobelijn", achternaam: "Professor", uren: 24, minuten: 6, gender: "man"},
+    {naam: "Speedy", achternaam: "Gonzalez", uren: 2, minuten: 4, gender: "man"}, 
+    {naam: "Josje", achternaam: "van K3", uren: 1, minuten: 54, gender: "vrouw"},
+    {naam: "Smurfin", achternaam: "van de smurfen", uren: 0, minuten: 54, gender: "vrouw"},
 ]
 
 // Allow Cross Origin Calls
