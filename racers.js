@@ -26,7 +26,7 @@ app.all('/*', function (req, res, next) {
 });
 
 app.get('/list/', function(vraag, antwoord) {
-    antwoord.send(deelnemers);
+    antwoord.send(JSON.stringify(deelnemers));
 });
 
 // Listen on port
