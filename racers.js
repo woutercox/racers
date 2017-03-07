@@ -29,12 +29,12 @@ var deelnemers = [
     {naam: "Smurfin", achternaam: "van de smurfen", uren: 0, minuten: 54, gender: "vrouw"},
 ]
 
-var nieuweDeelnemer = {};
-nieuweDeelnemer.naam = "Potige";
-nieuweDeelnemer.achternaam = "Smurf";
-nieuweDeelnemer.uren = 3;
-nieuweDeelnemer.minuten = 12;
-nieuweDeelnemer.gender = "man";
+var nieuw = {};
+nieuw.naam = "Potige";
+nieuw.achternaam = "Smurf";
+nieuw.uren = 3;
+nieuw.minuten = 12;
+nieuw.gender = "man";
 
 // Allow Cross Origin Calls
 app.all('/*', function (req, res, next) {
@@ -54,7 +54,8 @@ app.get('/list/', function(request, response) {
 app.post('/addRunner', function (request, response) {
     console.log("We gaan een renner toevoegen");
      deelnemers.push(
-         new Renner(request.body.naam, request.body.achternaam, request.body.geslacht, request.body.uren, request.body.minuten, request.body.gender)
+         // new Renner(nieuw.naam, nieuw.achternaam, nieuw.uren, nieuw.minuten, nieuw.gender)
+         new Renner(request.body.name, request.body.lastname, request.body.hours, request.body.minutes, request.body.gender)
      )
      response.end('{"message" : "Added Successfully", "status" : 200}. Naam toegevoegde deelnemer:' + deelnemers[deelnemers.length-1].naam);
 });
