@@ -178,7 +178,7 @@ app.delete('/deleteRunner', function (request, response) {
             if(err) { throw err; }
              response.end("<p>Renner verwijderd</p>");
             });
-    })    
+    });   
 });
 
 // Listen on port
