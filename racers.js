@@ -32,7 +32,30 @@ function toonRenners(callback) {
         // Get the renners collection
         var collection = db.collection('renners');
         // Find all documents
-        collection.find().toArray(function (err, docs) {
+        collection.find().sort({uren: 1, minuten: 1}).toArray(function (err, docs) {
+            if (!err) {
+                var result = JSON.stringify(docs);
+                callback(null, result);
+            }
+            else {
+                console.log('Error while performing query.');
+                console.log("Fout");
+                callback(err, {});
+            }
+            db.close();
+        });
+    });
+}
+
+function toonEenRenner(callback, mongoQuery) {
+    // Use connect method to connect to the server
+    mongoClient.connect(url, function (err, db) {
+        console.log("Connected successfully to server");
+        // Get the renners collection
+        var collection = db.collection('renners');
+        // Find all documents
+ 
+        collection.findOne(mongoQuery, function(err, docs) {
             if (!err) {
                 var result = JSON.stringify(docs);
                 callback(null, result);
@@ -69,6 +92,8 @@ function slaRennerOp(callback) {
     });
 }
 
+
+
 var deelnemers = [
     {naam: "Piet", achternaam: "Piraat", uren: 4, minuten: 4, gender: "man"}, {naam: "Gobelijn", achternaam: "Professor", uren: 24, minuten: 6, gender: "man"},
     {naam: "Speedy", achternaam: "Gonzalez", uren: 2, minuten: 4, gender: "man"}, 
@@ -98,6 +123,16 @@ app.get('/list', function(request, response) {
    toonRenners(function(foutjes, resultaat) {
         response.send(resultaat);
     });
+});
+
+app.get('/list/:voornaam/:naam', function(request, response) {
+     // response.send(request.params.user)
+     // Peform a simple find and return all the documents
+    var mongoQuery = {naam: request.params.voornaam, achternaam: request.params.naam };
+
+    toonEenRenner(function(foutjes, resultaat) {
+        response.send(resultaat);
+    }, mongoQuery);
 });
 
 app.post('/addRunner', function (request, response) {
