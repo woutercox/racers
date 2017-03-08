@@ -32,7 +32,7 @@ function toonRenners(callback, mongoQuery) {
         // Get the renners collection
         var collection = db.collection('renners');
         // Find all documents
-        collection.find().sort({uren: 1, minuten: 1}).toArray(function (err, docs) {
+        collection.find(mongoQuery).sort({uren: 1, minuten: 1}).toArray(function (err, docs) {
             if (!err) {
                 var result = JSON.stringify(docs);
                 callback(null, result);
@@ -126,8 +126,8 @@ app.get('/list', function(request, response) {
 
 app.get('/list/gender/:q', function(request, response) {
   console.log('Er werd gesurft naar /list/nogiets');
-     var mongoQuery = {naam: request.params.q };
-     toonEenRenner(function(foutjes, resultaat) {
+     var mongoQuery = {gender: request.params.q };
+     toonRenners(function(foutjes, resultaat) {
         response.send(resultaat);
     }, mongoQuery);
 });
