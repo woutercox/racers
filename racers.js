@@ -25,7 +25,7 @@ function Renner(naam, achternaam, uren, minuten, gender) {
     this.gender = gender;
 }
 
-function toonRenners(callback) {
+function toonRenners(callback, mongoQuery) {
     // Use connect method to connect to the server
     mongoClient.connect(url, function (err, db) {
         console.log("Connected successfully to server");
@@ -91,22 +91,21 @@ function slaRennerOp(callback) {
         });
     });
 }
+var deelnemers = [];
 
+// var deelnemers = [
+//     {naam: "Piet", achternaam: "Piraat", uren: 4, minuten: 4, gender: "man"}, {naam: "Gobelijn", achternaam: "Professor", uren: 24, minuten: 6, gender: "man"},
+//     {naam: "Speedy", achternaam: "Gonzalez", uren: 2, minuten: 4, gender: "man"}, 
+//     {naam: "Josje", achternaam: "van K3", uren: 1, minuten: 54, gender: "vrouw"},
+//     {naam: "Smurfin", achternaam: "van de smurfen", uren: 0, minuten: 54, gender: "vrouw"},
+// ]
 
-
-var deelnemers = [
-    {naam: "Piet", achternaam: "Piraat", uren: 4, minuten: 4, gender: "man"}, {naam: "Gobelijn", achternaam: "Professor", uren: 24, minuten: 6, gender: "man"},
-    {naam: "Speedy", achternaam: "Gonzalez", uren: 2, minuten: 4, gender: "man"}, 
-    {naam: "Josje", achternaam: "van K3", uren: 1, minuten: 54, gender: "vrouw"},
-    {naam: "Smurfin", achternaam: "van de smurfen", uren: 0, minuten: 54, gender: "vrouw"},
-]
-
-var nieuw = {};
-nieuw.naam = "Potige";
-nieuw.achternaam = "Smurf";
-nieuw.uren = 3;
-nieuw.minuten = 12;
-nieuw.gender = "man";
+// var nieuw = {};
+// nieuw.naam = "Potige";
+// nieuw.achternaam = "Smurf";
+// nieuw.uren = 3;
+// nieuw.minuten = 12;
+// nieuw.gender = "man";
 
 // Allow Cross Origin Calls
 app.all('/*', function (req, res, next) {
@@ -123,6 +122,14 @@ app.get('/list', function(request, response) {
    toonRenners(function(foutjes, resultaat) {
         response.send(resultaat);
     });
+});
+
+app.get('/list/gender/:q', function(request, response) {
+  console.log('Er werd gesurft naar /list/nogiets');
+     var mongoQuery = {naam: request.params.q };
+     toonEenRenner(function(foutjes, resultaat) {
+        response.send(resultaat);
+    }, mongoQuery);
 });
 
 app.get('/list/:voornaam/:naam', function(request, response) {
@@ -159,4 +166,3 @@ var server = app.listen(8081, function() {
 	var port = server.address().port;
 	console.log("App listening at http://%s:%s", host, port);
 });
-
