@@ -72,16 +72,16 @@ function toonEenRenner(callback, mongoQuery) {
     });
 }
 
-function updateRenner(callback, mongoQuery) {
-     // Use connect method to connect to the server
+function updateRenner(callback, findQuery, updateQuery) {
+    // Use connect method to connect to the server
     mongoClient.connect(url, function (err, db) {
         console.log("Connected successfully to server");
         // Get the renners collection
         var collection = db.collection('renners');
-    collection.updateOne({naam:"Bril",achternaam: "smurf"}, {naam: "Brillie", achternaam: "Smurf"}, {upsert:true, w: 1}, function(err, result) {
-        console.log("Update renner gelukt");
-        db.close();
-    });
+        collection.updateOne(findQuery, updateQuery, {upsert:false, w: 1}, function(err, result) {
+            console.log("Update renner gelukt");
+            db.close();
+        });
     });
 };
 
@@ -200,7 +200,7 @@ app.post('/deleteRunner', function (request, response) {
     mongoClient.connect(url, function (err, db) {
         db.collection('renners').remove(mongoQuery, function(err, result) {
             if(err) { throw err; }
-             response.end("<p>Renner verwijderd</p>");
+             response.send("Renner verwijderd");
             });
     });   
 });
@@ -208,7 +208,8 @@ app.post('/deleteRunner', function (request, response) {
 app.post('/update/Bril/Smurf', function(request, response) {
      // response.send(request.params.user)
      // Peform a simple find and return all the documents
-    // var mongoQuery = {naam: request.params.voornaam, achternaam: request.params.naam };
+    var findQuery = {naam: request.params.voornaam, achternaam: request.params.naam };
+    var updateQuery = {naam: request.params.voornaam, achternaam: request.params.naam };
     updateRenner();
     // updateRenner(function(foutjes, resultaat) {
     //     response.setHeader('Content-Type', 'application/json');
