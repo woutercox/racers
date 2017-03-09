@@ -70,8 +70,8 @@
                                     select.setAttribute('id', 'selectUpdate');
                                     select.onchange = function(){
                                         document.getElementById('form').setAttribute('action', link+'/update/'+this.value);
-                                        document.getElementById('newName').setAttribute('placeholder', this.innerText.split(' ')[0]);
-                                        document.getElementById('newLastName').setAttribute('placeholder', this.innerText.split(' ')[1]);
+                                        document.getElementById('newName').setAttribute('placeholder', this.options[this.selectedIndex].text.split(' ')[0]);
+                                        document.getElementById('newLastName').setAttribute('placeholder', this.options[this.selectedIndex].text.split(' ')[1]);
 
                                     }
                                     var runners = JSON.parse(xml.responseText);
@@ -175,34 +175,9 @@
                     xml.onreadystatechange = function(){
                         if (xml.status == 200)
                             {
-                                if (xml.readyState == 0)
-                                    {
-                                        var balk = document.createElement('progress');
-                                        balk.setAttribute('min', 0);
-                                        balk.setAttribute('max', 0);
-                                        balk.setAttribute('id', 'pro');
-                                        balk.setAttribute('class', 'progress-bar');
-                                        document.getElementById('balk').appendChild(balk);
-                                    }
-                                else 
-                                    {
-                                        document.getElementById('id').value = xml.readyState * 25
-                                        
-                                    }
                                 if (xml.readyState == 4){
                                         document.getElementById('btn').removeAttribute('class');
                                         document.getElementById('btn').setAttribute('class', 'btn btn-success')
-                                }
-                            }
-                        if (xml.status == 404)
-                            {
-                                document.getElementById('btn').removeAttribute('class');
-                                document.getElementById('btn').setAttribute('class', 'btn btn-danger')
-                            }
-                        if (xml.status == 500)
-                            {
-                                document.getElementById('btn').removeAttribute('class');
-                                document.getElementById('btn').setAttribute('class', 'btn btn-error')
                             }
                     }
                     var name = document.getElementById('name').value;
