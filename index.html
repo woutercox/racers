@@ -40,7 +40,8 @@
                             var content = document.getElementById('content');
                             content.innerHTML = '';
                             var ul = document.createElement('ul');
-                            for (var child of JSON.parse(xml.responseText))
+                            var runners = JSON.parse(xml.responseText);
+                            for (var child of runenrs)
                                 {
                                     var li = document.createElement('li');
                                     li.setAttribute('delName', child.name+'.'+child.lastname);
