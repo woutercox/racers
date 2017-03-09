@@ -58,11 +58,19 @@
             }
 
             function deleteRunner(e){
-                var del = new XMLHttpRequest();
-                del.open('POST', 'http://localhost:8081/deleteRunner');
-                del.onreadystatechange = function(){
-                    
-                }
+                var naam = e.srcElement.getAttribute('delName').split('.')[0];
+                var naam = e.srcElement.getAttribute('delName').split('.')[1];
+                if (confirm('Are you sure you want to delete' + naam +' '+achternaam+'?'))
+                    {
+                        var del = new XMLHttpRequest();
+                        del.open('POST', 'http://localhost:8081/deleteRunner');
+                        del.onreadystatechange = function(){
+                            if (del.status == 200 && del.readyState == 4)
+                                {
+                                    
+                                }
+                        }
+                    }
             }
 
             function loadRunner(url){
