@@ -67,9 +67,10 @@
                         del.onreadystatechange = function(){
                             if (del.status == 200 && del.readyState == 4)
                                 {
-                                    
+                                    alert(del.responseText);
                                 }
                         }
+                        del.Send();
                     }
             }
 
