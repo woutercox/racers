@@ -37,21 +37,24 @@
                         var xml =new XMLHttpRequest();
                         xml.open('GET', 'http://localhost:8081/list');
                         xml.onreadystatechange = function(){
-                            var content = document.getElementById('content');
-                            content.innerHTML = '';
-                            var ul = document.createElement('ul');
-                            var runners = JSON.parse(xml.responseText);
-                            for (var child of runners)
+                            if (xml.status == 200 && xml.readyState == 4)
                                 {
-                                    var li = document.createElement('li');
-                                    li.setAttribute('delName', child.name+'.'+child.lastname);
-                                    li.innerHTML = '<span>delete '+child.name +' '+child.lastname+'</span>';
-                                    ul.appendChild(li);
-                                }
-                            content.appendChild(ul);
-                            for (var lili of content.getElementsByClassName('li'))
-                                {
-                                    lili.addEventListener('click', deleteRunner);
+                                    var content = document.getElementById('content');
+                                    content.innerHTML = '';
+                                    var ul = document.createElement('ul');
+                                    var runners = JSON.parse(xml.responseText);
+                                    for (var child of runners)
+                                        {
+                                            var li = document.createElement('li');
+                                            li.setAttribute('delName', child.name+'.'+child.lastname);
+                                            li.innerHTML = '<span>delete '+child.name +' '+child.lastname+'</span>';
+                                            ul.appendChild(li);
+                                        }
+                                    content.appendChild(ul);
+                                    for (var lili of content.getElementsByClassName('li'))
+                                        {
+                                            lili.addEventListener('click', deleteRunner);
+                                        }
                                 }
                         }
                         xml.send();
