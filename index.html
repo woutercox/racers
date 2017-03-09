@@ -47,8 +47,7 @@
                                     for (var child of runners)
                                         {
                                             var li = document.createElement('li');
-                                            li.setAttribute('id', child._id);
-                                            li.innerHTML = '<span>'+child.naam +' '+child.achternaam+'</span>';
+                                            li.innerHTML = '<span id="'+child._id+'"><a>'+child.naam +' '+child.achternaam+'</a></span>';
                                             ul.appendChild(li);
                                         }
                                     content.appendChild(ul);
