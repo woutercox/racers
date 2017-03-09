@@ -73,7 +73,8 @@
                                     alert(del.responseText);
                                 }
                         }
-                        del.send();
+                        del.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+                        del.send('id='+id);
                     }
             }
 
