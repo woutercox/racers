@@ -41,7 +41,7 @@
                             content.innerHTML = '';
                             var ul = document.createElement('ul');
                             var runners = JSON.parse(xml.responseText);
-                            for (var child of runenrs)
+                            for (var child of runners)
                                 {
                                     var li = document.createElement('li');
                                     li.setAttribute('delName', child.name+'.'+child.lastname);
