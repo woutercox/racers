@@ -10,6 +10,7 @@ var app = express();
 var mongoClient = require('mongodb').MongoClient;
 var path = require("path");
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 // MongoDB Connection URL
 var url = 'mongodb://localhost:27017/test';
@@ -119,9 +120,9 @@ app.get('/index.html', function(request, response) {
     response.sendFile(path.join(__dirname + '/index.html'));
 });
 
-// app.get('/pages/:page', function(request, response) {
-//     response.sendFile(path.join(__dirname + "/pages/" + request.params.page));
-// });
+app.get('/pages/:page', function(request, response) {
+    response.sendFile(path.join(__dirname + "/pages/" + request.params.page));
+ });
 
 app.get('/list', function(request, response) {
    toonRenners(function(foutjes, resultaat) {

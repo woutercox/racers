@@ -31,6 +31,9 @@
                     case 'all':
                         newContent = 'http://localhost:8081/list';
                         break;
+                    case 'new':
+                        newContent = 'http://localhost:8081/pages/new';
+                        break;
                 }
               var xml = new XMLHttpRequest();
               xml.open('GET', newContent);
@@ -40,10 +43,14 @@
                         var content = document.getElementById('content');
                         content.innerHTML = '';
                         var runners = JSON.parse(xml.responseText);
+                        var ul = document.createElement('ul');
                         for (var runner of runners)
                             {
-                                console.log(runner);
+                                var li = document.createElement('li');
+                                li.innerHTML = runner.naam +' '+runner.achternaam+' ('+runner.gender+') heeft de race in '+runner.uren+' en '+runner.minuten+' gelopen.';
+                                ul.appendChild(li);
                             }
+                        content.appendChild(ul);
                     }
               }  
               xml.send();
