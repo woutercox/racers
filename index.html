@@ -42,18 +42,22 @@
                                     var content = document.getElementById('content');
                                     content.innerHTML = '';
                                     var ul = document.createElement('ul');
+                                    ul.setAttribute('id', 'ul');
                                     var runners = JSON.parse(xml.responseText);
                                     for (var child of runners)
                                         {
                                             var li = document.createElement('li');
                                             li.setAttribute('id', child._id);
                                             li.innerHTML = '<span>'+child.naam +' '+child.achternaam+'</span>';
-                                            li.addEventListener('click', function(e){
-                                                deleteRunner(child._id, child.naam, child.achternaam);
-                                            });
                                             ul.appendChild(li);
                                         }
                                     content.appendChild(ul);
+                                    for (var lili of document.getElementById('ul'))
+                                        {
+                                            lili.addEventListener('click', function(e){
+                                                deleteRunner(child._id, child.naam, child.achternaam);
+                                            });
+                                        }
                                 }
                         }
                         xml.send();
