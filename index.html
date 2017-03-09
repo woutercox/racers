@@ -61,9 +61,9 @@
                 }
             }
 
-            function deleteRunner(event){
-                var id = event.srcElement.getAttribute('id');
-                if (confirm('Are you sure you want to delete' + event.srcElement.innerText+' ('+id+')?'))
+            function deleteRunner(e){
+                var id = e.srcElement.getAttribute('id');
+                if (confirm('Are you sure you want to delete ' + e.srcElement.innerText+' ('+id+')?'))
                     {
                         var del = new XMLHttpRequest();
                         del.open('POST', 'http://localhost:8081/deleteRunner');
