@@ -46,7 +46,7 @@
                                     for (var child of runners)
                                         {
                                             var li = document.createElement('li');
-                                            li.setAttribute('delName', child.naam+'.'+child.achternaam);
+                                            li.setAttribute('id', child._id);
                                             li.innerHTML = '<span>delete '+child.naam +' '+child.achternaam+'</span>';
                                             li.addEventListener('click', function(e){
                                                 deleteRunner(e);
@@ -62,9 +62,8 @@
             }
 
             function deleteRunner(event){
-                var naam = event.srcElement.getAttribute('delName').split('.')[0];
-                var naam = event.srcElement.getAttribute('delName').split('.')[1];
-                if (confirm('Are you sure you want to delete' + naam +' '+achternaam+'?'))
+                varid = event.srcElement.getAttribute('id');
+                if (confirm('Are you sure you want to delete' + event.srcElement.innerText+'?'))
                     {
                         var del = new XMLHttpRequest();
                         del.open('POST', 'http://localhost:8081/deleteRunner');
