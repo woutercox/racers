@@ -9,6 +9,7 @@
         <script>
             'use strict'
             const link = 'http://localhost:8081';
+            var current = link+'/list';
             window.onload = init;
             function init(){
                for (var a of document.getElementsByTagName('a'))
@@ -17,6 +18,8 @@
                             getNewPage(e.srcElement.getAttribute('url') || e.target.getAttribute('url'));
                         })
                     }
+               getNewPage(current);
+               setInterval(getNewPage(current), 10000); 
             };
             function getNewPage(url){
                 var content = document.getElementById('content');
@@ -24,15 +27,19 @@
                 switch (url){
                     case "male":
                         loadRunner(link+'/list/gender/male');
+                        current = 'male';
                         break;
                     case 'female': 
                         loadRunner(link+'/list/gender/female');
+                        current ='female';
                         break;
                     case 'all':
                         loadRunner(link+'/list');
+                        current = 'all';
                         break;
                     case 'new':
                         loadRunner(link+'/pages/new.html');
+                        current = 'new';
                         break;
                     case 'delete':
                         var xml =new XMLHttpRequest();
@@ -57,6 +64,7 @@
                                 }
                         }
                         xml.send();
+                        current = 'delete';
                         break;
                     case 'update':
                         var xml =new XMLHttpRequest();
@@ -113,6 +121,7 @@
                                 }
                         }
                         xml.send();
+                        getNewPage('update');
                         break;
                 }
             }
