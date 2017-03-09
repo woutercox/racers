@@ -34,7 +34,8 @@
                         loadRunner('http://localhost:8081/pages/new.html');
                         break;
                     case 'delete':
-                        var xml =new XMLHttpRequest().open('GET', 'http://localhost:8081/list');
+                        var xml =new XMLHttpRequest();
+                        xml.open('GET', 'http://localhost:8081/list');
                         xml.onreadystatechange = function(){
                             var content = document.getElementById('content');
                             content.innerHTML = '';
