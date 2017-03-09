@@ -56,6 +56,30 @@
                         }
                         xml.send();
                         break;
+                    case 'update':
+                        var xml =new XMLHttpRequest();
+                        xml.open('GET', 'http://localhost:8081/list');
+                        xml.onreadystatechange = function(){
+                            if (xml.status == 200 && xml.readyState == 4)
+                                {
+                                    var content = document.getElementById('content');
+                                    content.innerHTML = '';
+                                    var select = document.createElement('select');
+                                    select.setAttribute('id', 'selectUpdate');
+                                    var runners = JSON.parse(xml.responseText);
+                                    for (var runner of runners)
+                                        {
+                                            var option = document.createElement('option');
+                                            option.setAttribute('value', runner._id);
+                                            option.innerHTML = runner.naam + ' '+runner.achternaam
+                                            select.appendChild(option);
+                                        }
+                                    content.appendChild(select);
+                                    content.appendChild()
+                                }
+                        }
+                        xml.send();
+                        break;
                 }
             }
 
@@ -171,6 +195,7 @@
                         <li><a url="all" id="3">All finishers</a></li>
                         <li><a url="new" id="4" >Insert new finisher</a></li>
                         <li><a url="delete" id="5">Delete finisher</a></li>
+                        <li><a url="update" id="6">update finisher</a></li>
                     </ul>
                 </div>
             </div>
