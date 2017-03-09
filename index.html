@@ -59,9 +59,9 @@
                 }
             }
 
-            function deleteRunner(e){
-                var naam = e.srcElement.getAttribute('delName').split('.')[0];
-                var naam = e.srcElement.getAttribute('delName').split('.')[1];
+            function deleteRunner(){
+                var naam = event.srcElement.getAttribute('delName').split('.')[0];
+                var naam = event.srcElement.getAttribute('delName').split('.')[1];
                 if (confirm('Are you sure you want to delete' + naam +' '+achternaam+'?'))
                     {
                         var del = new XMLHttpRequest();
