@@ -22,20 +22,52 @@
                 var newContent = '';
                 switch (url){
                     case "male":
-                        newContent = 'http://localhost:8081/list/gender/man';
+                        loadRunner('http://localhost:8081/list/gender/man');
                         break;
                     case 'female': 
-                        newContent = 'http://localhost:8081/list/gender/vrouw';
+                        loadRunner('http://localhost:8081/list/gender/vrouw');
                         break;
                     case 'all':
-                        newContent = 'http://localhost:8081/list';
+                        loadRunner('http://localhost:8081/list');
                         break;
                     case 'new':
-                        newContent = 'http://localhost:8081/pages/new.html';
+                        loadRunner('http://localhost:8081/pages/new.html');
+                        break;
+                    case 'delete':
+                        var xml =new XMLHttpRequest().open('GET', 'http://localhost:8081/list');
+                        xml.onreadystatechange = function(){
+                            var content = document.getElementById('content');
+                            content.innerHTML = '';
+                            var ul = document.createElement('ul');
+                            for (var child of JSON.parse(xml.responseText))
+                                {
+                                    var li = document.createElement('li');
+                                    li.setAttribute('delName', child.name+'.'+child.lastname);
+                                    li.innerHTML = '<span>delete '+child.name +' '+child.lastname+'</span>';
+                                    ul.appendChild(li);
+                                }
+                            content.appendChild(ul);
+                            for (var lili of content.getElementsByClassName('li'))
+                                {
+                                    lili.addEventListener('click', deleteRunner);
+                                }
+                        }
+                        xml.send();
                         break;
                 }
-              var xml = new XMLHttpRequest();
-              xml.open('GET', newContent);
+            }
+
+            function deleteRunner(e){
+                var del = new XMLHttpRequest();
+                del.open('POST', 'http://localhost:8081/deleteRunner');
+                del.onreadystatechange = function(){
+                    
+                }
+            }
+
+            function loadRunner(url){
+            var xml = new XMLHttpRequest();
+              xml.open('GET', url);
               var states = new Array(200, 304, 201, 202);
               xml.onreadystatechange = function(){
                   if (states.indexOf(xml.status) != -1 && xml.readyState==4)
@@ -52,6 +84,7 @@
                             {
                                 var runners = JSON.parse(xml.responseText);
                                 var ul = document.createElement('ul');
+                                ul.setAttribute('id', 'ulul');
                                 for (var runner of runners)
                                     {
                                         var li = document.createElement('li');
@@ -127,6 +160,7 @@
                         <li><a url="female" id="2">Female finishers</a></li>
                         <li><a url="all" id="3">All finishers</a></li>
                         <li><a url="new" id="4" >Insert new finisher</a></li>
+                        <li><a url="delete" id="5">Delete finisher</a></li>
                     </ul>
                 </div>
             </div>

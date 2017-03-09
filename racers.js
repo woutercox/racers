@@ -177,7 +177,7 @@ app.post('/addRunner', function (request, response) {
         })
 });
 
-app.delete('/deleteRunner', function (request, response) {
+app.post('/deleteRunner', function (request, response) {
     var mongoQuery = {naam: request.body.name, achternaam: request.body.lastname };
     console.log("We gaan een renner verwijderen. Onze query:");
     console.dir(mongoQuery);
