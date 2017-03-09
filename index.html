@@ -36,8 +36,9 @@
                 }
               var xml = new XMLHttpRequest();
               xml.open('GET', newContent);
+              var states = new Array(200, 304, 201, 202);
               xml.onreadystatechange = function(){
-                  if ((xml.status!=404 || xml.status !=500)&&xml.readyState==4)
+                  if (states.indexOf(xml.status) != -1 &&xml.readyState==4)
                     {
                         var content = document.getElementById('content');
                         content.innerHTML = '';
