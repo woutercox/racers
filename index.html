@@ -42,11 +42,11 @@
                     {
                         var content = document.getElementById('content');
                         content.innerHTML = '';
-                        if (xml.getResponseHeader('content-type') == 'text/html')
+                        if (xml.getResponseHeader('content-type').contains('text/html'))
                             {
                                 content.innerHTML = xml.responseText;
                             }
-                        else if (xml.getResponseHeader('content-type') == 'application/json')
+                        else if (xml.getResponseHeader('content-type').contains('application/json'))
                             {
                                 var runners = JSON.parse(xml.responseText);
                                 var ul = document.createElement('ul');
