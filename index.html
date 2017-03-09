@@ -82,7 +82,33 @@
                                             select.appendChild(option);
                                         }
                                     content.appendChild(select);
-                                    content.appendChild('<form id="form" method="post"><input id="newName" type="text" name="nieuweNaam" placeholder="" class="form-control" /><br /><input type="text" id="newLastName" name="nieuweAchterNaam" placeholder="" class="form-control" /><br /><button class="btn btn-primary" type="submit">Update!</button></form>')
+                                    var form = document.createElement('form');
+                                    form.setAttribute('id', 'form');
+                                    form.setAttribute('method', 'post');
+                                    var nieuweNaam = document.createElement('input');
+                                    nieuweNaam.setAttribute('type', 'text');
+                                    nieuweNaam.setAttribute('id', 'newName');
+                                    nieuweNaam.setAttribute('name', 'nieuweNaam');
+                                    nieuweNaam.setAttribute('placeholder', '');
+                                    nieuweNaam.setAttribute('class', 'form-control');
+
+                                    var nieuweAchterNaam = document.createElement('input');
+                                    nieuweAchterNaam.setAttribute('type', 'text');
+                                    nieuweAchterNaam.setAttribute('id', 'newName');
+                                    nieuweAchterNaam.setAttribute('name', 'nieuweAchterNaam');
+                                    nieuweAchterNaam.setAttribute('placeholder', '');
+                                    nieuweAchterNaam.setAttribute('class', 'form-control');
+                                    
+                                    var btn = document.createElement('button');
+                                    btn.setAttribute('class', 'btn btn-primary');
+                                    btn.setAttribute('type', 'submit');
+                                    btn.innerHTML = 'Update!'
+
+                                    form.appendChild(nieuweNaam);
+                                    form.appendChild(nieuweAchterNaam);
+                                    form.appendChild(btn);
+
+                                    content.appendChild(form)
                                 }
                         }
                         xml.send();
