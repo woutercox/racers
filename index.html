@@ -80,6 +80,7 @@
                                         document.getElementById('form').setAttribute('action', link+'/update/'+this.value);
                                         document.getElementById('newName').setAttribute('placeholder', this.options[this.selectedIndex].text.split(' ')[0]);
                                         document.getElementById('newLastName').setAttribute('placeholder', this.options[this.selectedIndex].text.split(' ')[1]);
+                                        current = '';
 
                                     }
                                     var runners = JSON.parse(xml.responseText);
@@ -121,6 +122,7 @@
                                 }
                         }
                         xml.send();
+                        current = 'update';
                         getNewPage('update');
                         break;
                 }
