@@ -11,7 +11,7 @@ var mongoClient = require('mongodb').MongoClient;
 var path = require("path");
 var bodyParser = require('body-parser');
 var fs = require('fs');
-
+var ObjectID = require('mongodb').ObjectID;
 // MongoDB Connection URL
 var url = 'mongodb://localhost:27017/test';
 
@@ -176,7 +176,7 @@ app.post('/addRunner', function (request, response) {
     //     new Renner(request.body.name, request.body.lastname, request.body.hours, request.body.minutes, request.body.gender)
     // )
 
-    var nieuweDeelnemer = new Renner(request.body.name, request.body.lastname, request.body.hour, request.body.minutes, request.body.gender);
+    var nieuweDeelnemer = new Renner(request.body.name, request.body.lastname, parseInt(request.body.hour), parseInt(request.body.minutes), request.body.gender);
     
     // Sla de renner op in MongoDB
     mongoClient.connect(url, function (err, db) {
@@ -190,31 +190,40 @@ app.post('/addRunner', function (request, response) {
         })
 });
 
-app.post('/deleteRunner', function (request, response) {
-    var mongoQuery = {naam: request.body.name, achternaam: request.body.lastname };
+app.delete('/deleteRunner/:id', function (request, response) {
+
+    // Convert hex to objectID
+    //var myObjectId = new ObjectID.createFromHexString(request.body.id)
+    console.log(request.params.id);
+    var myObjectId = new ObjectID(request.params.id)
+    console.log(myObjectId);
+    var mongoQuery = {_id: myObjectId};
     console.log("We gaan een renner verwijderen. Onze query:");
     console.dir(mongoQuery);
 
     // Verwijder de renner in MongoDB
     
     mongoClient.connect(url, function (err, db) {
-        db.collection('renners').remove(mongoQuery, function(err, result) {
+        db.collection('renners').removeOne(mongoQuery, function(err, result) {
             if(err) { throw err; }
-             response.send("Renner verwijderd");
+             response.send("Renners verwijderd: " + result);
             });
     });   
 });
 
-app.post('/update/Bril/Smurf', function(request, response) {
+app.post('/update/:id', function(request, response) {
      // response.send(request.params.user)
      // Peform a simple find and return all the documents
-    var findQuery = {naam: request.params.voornaam, achternaam: request.params.naam };
-    var updateQuery = {naam: request.params.voornaam, achternaam: request.params.naam };
-    updateRenner();
-    // updateRenner(function(foutjes, resultaat) {
-    //     response.setHeader('Content-Type', 'application/json');
-    //     response.send(resultaat);
-    // }, mongoQuery);
+    console.log(request.params.id);
+    var myObjectId = new ObjectID(request.params.id)
+    var findQuery = {_id: myObjectId };
+
+    var updateQuery = {naam: request.body.nieuweNaam, achternaam: request.body.nieuweAchternaam };
+    // updateRenner();
+    updateRenner(function(foutjes, resultaat) {
+        response.setHeader('Content-Type', 'application/json');
+        response.send(resultaat);
+    }, findQuery, updateQuery);
 });
 
 // Listen on port
