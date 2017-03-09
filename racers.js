@@ -134,7 +134,7 @@ app.get('/list', function(request, response) {
 });
 
 app.get('/list/gender/:q', function(request, response) {
-  console.log('Er werd gesurft naar /list/nogiets');
+  console.log('Er werd gesurft naar /list/gender/' + request.params.q);
      var mongoQuery = {gender: request.params.q };
      toonRenners(function(foutjes, resultaat) {
         response.setHeader('Content-Type', 'application/json');
