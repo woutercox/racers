@@ -38,15 +38,15 @@
               xml.open('GET', newContent);
               var states = new Array(200, 304, 201, 202);
               xml.onreadystatechange = function(){
-                  if (states.indexOf(xml.status) != -1 &&xml.readyState==4)
+                  if (states.indexOf(xml.status) != -1 && xml.readyState==4)
                     {
                         var content = document.getElementById('content');
                         content.innerHTML = '';
-                        if (xml.getResponseHeader('content-type').contains('text/html'))
+                        if (xml.getResponseHeader('content-type').toString().contains('text/html'))
                             {
                                 content.innerHTML = xml.responseText;
                             }
-                        else if (xml.getResponseHeader('content-type').contains('application/json'))
+                        else if (xml.getResponseHeader('content-type').toString().contains('application/json'))
                             {
                                 var runners = JSON.parse(xml.responseText);
                                 var ul = document.createElement('ul');
