@@ -48,7 +48,7 @@
                                             var li = document.createElement('li');
                                             li.setAttribute('delName', child.naam+'.'+child.achternaam);
                                             li.innerHTML = '<span>delete '+child.naam +' '+child.achternaam+'</span>';
-                                            li.addEventListener('click', deleteRunner);
+                                            li.addEventListener('click', deleteRunner(e));
                                             ul.appendChild(li);
                                         }
                                     content.appendChild(ul);
@@ -59,7 +59,7 @@
                 }
             }
 
-            function deleteRunner(){
+            function deleteRunner(event){
                 var naam = event.srcElement.getAttribute('delName').split('.')[0];
                 var naam = event.srcElement.getAttribute('delName').split('.')[1];
                 if (confirm('Are you sure you want to delete' + naam +' '+achternaam+'?'))
