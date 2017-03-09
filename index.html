@@ -22,10 +22,10 @@
                 var newContent = '';
                 switch (url){
                     case "male":
-                        loadRunner('http://localhost:8081/list/gender/man');
+                        loadRunner('http://localhost:8081/list/gender/male');
                         break;
                     case 'female': 
-                        loadRunner('http://localhost:8081/list/gender/vrouw');
+                        loadRunner('http://localhost:8081/list/gender/female');
                         break;
                     case 'all':
                         loadRunner('http://localhost:8081/list');
@@ -44,11 +44,12 @@
                                     var ul = document.createElement('ul');
                                     ul.setAttribute('id', 'ul');
                                     var runners = JSON.parse(xml.responseText);
-                                    for (var child of runners)
+                                    for (let child of runners)
                                         {
                                             var li = document.createElement('li');
                                             li.innerHTML = '<span id="'+child._id+'"><a>'+child.naam +' '+child.achternaam+'</a></span>';
-                                            li.setAttribute('onclick', 'function x(){deleteRunner('+child._id+', '+child.naam+', '+child.achternaam+')}');
+                                            // li.setAttribute('onclick', 'function x(){deleteRunner('+child._id+', '+child.naam+', '+child.achternaam+')}');
+                                            li.onclick = function() {deleteRunner(child._id, child.naam, child.achternaam)};
                                             ul.appendChild(li);
                                         }
                                     content.appendChild(ul);
@@ -87,15 +88,15 @@
                 if (confirm('Are you sure you want to delete ' + name+' '+lastname+' ('+id+')?'))
                     {
                         var del = new XMLHttpRequest();
-                        del.open('POST', 'http://localhost:8081/deleteRunner');
+                        del.open('DELETE', 'http://localhost:8081/deleteRunner/' + id);
                         del.onreadystatechange = function(){
                             if (del.status == 200 && del.readyState == 4)
                                 {
                                     alert(del.responseText);
                                 }
                         }
-                        del.setRequestHeader('Content-Type', 'x-www-form-urlencoded')
-                        del.send('id='+id);
+                        // del.setRequestHeader('Content-Type', 'x-www-form-urlencoded')
+                        del.send();
                     }
             }
 
