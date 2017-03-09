@@ -45,7 +45,8 @@
                         if (xml.getResponseHeader('Content-Type').toString().search(/text\/html/i) != -1)
                             {
                                 content.innerHTML = xml.responseText;
-                                document.getElementById('btn').addEventListener('click', newRunner);
+                                content.getElementsByTagName('button')[0].addEventListener('click', newRunner);
+                                //content.getElementById('btn').addEventListener('click', newRunner);
                             }
                         else if (xml.getResponseHeader('Content-Type').toString().search(/application\/json/i) != -1)
                             {
