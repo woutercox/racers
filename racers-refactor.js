@@ -10,13 +10,13 @@ var app = express();
 var mongoClient = require('mongodb').MongoClient;
 var path = require("path");
 var bodyParser = require('body-parser');
-var fs = require('fs');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // MongoDB Connection URL
 var url = 'mongodb://localhost:27017/test';
-
-// app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true }));
+var router = express.Router();     
 
 function Renner(naam, achternaam, uren, minuten, gender) {
     this.naam = naam;
@@ -71,43 +71,7 @@ function toonEenRenner(callback, mongoQuery) {
     });
 }
 
-// Deze functie gebruiken we niet op dit moment
-// function slaRennerOp(callback) {
-//     // Use connect method to connect to the server
-//     mongoClient.connect(url, function (err, db) {
-//         console.log("Connected successfully to server");
-//         // Get the renners collection
-//         var collection = db.collection('renners');
-//         // Find all documents
-//         collection.find().toArray(function (err, docs) {
-//             if (!err) {
-//                 var result = JSON.stringify(docs);
-//                 callback(null, result);
-//             }
-//             else {
-//                 console.log('Error while performing query.');
-//                 console.log("Fout");
-//                 callback(err, {});
-//             }
-//             db.close();
-//         });
-//     });
-// }
 var deelnemers = [];
-
-// var deelnemers = [
-//     {naam: "Piet", achternaam: "Piraat", uren: 4, minuten: 4, gender: "man"}, {naam: "Gobelijn", achternaam: "Professor", uren: 24, minuten: 6, gender: "man"},
-//     {naam: "Speedy", achternaam: "Gonzalez", uren: 2, minuten: 4, gender: "man"}, 
-//     {naam: "Josje", achternaam: "van K3", uren: 1, minuten: 54, gender: "vrouw"},
-//     {naam: "Smurfin", achternaam: "van de smurfen", uren: 0, minuten: 54, gender: "vrouw"},
-// ]
-
-// var nieuw = {};
-// nieuw.naam = "Potige";
-// nieuw.achternaam = "Smurf";
-// nieuw.uren = 3;
-// nieuw.minuten = 12;
-// nieuw.gender = "man";
 
 // Allow Cross Origin Calls
 app.all('/*', function (req, res, next) {
@@ -117,18 +81,17 @@ app.all('/*', function (req, res, next) {
 });
 
 app.get('/index.html', function(request, response) {
-    response.setHeader('content-type', 'text/html');
     response.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/pages/:page', function(request, response) {
-    response.setHeader('content-type', 'text/html');
-    response.sendFile(path.join(__dirname + "/pages/" + request.params.page));
- });
+app.use('/racers', router);
+
+// app.get('/pages/:page', function(request, response) {
+//     response.sendFile(path.join(__dirname + "/pages/" + request.params.page));
+// });
 
 app.get('/list', function(request, response) {
    toonRenners(function(foutjes, resultaat) {
-        response.setHeader('Content-Type', 'application/json');
         response.send(resultaat);
     });
 });
@@ -137,7 +100,6 @@ app.get('/list/gender/:q', function(request, response) {
   console.log('Er werd gesurft naar /list/nogiets');
      var mongoQuery = {gender: request.params.q };
      toonRenners(function(foutjes, resultaat) {
-        response.setHeader('Content-Type', 'application/json');
         response.send(resultaat);
     }, mongoQuery);
 });
@@ -148,18 +110,12 @@ app.get('/list/:voornaam/:naam', function(request, response) {
     var mongoQuery = {naam: request.params.voornaam, achternaam: request.params.naam };
 
     toonEenRenner(function(foutjes, resultaat) {
-        response.setHeader('Content-Type', 'application/json');
         response.send(resultaat);
     }, mongoQuery);
 });
 
 app.post('/addRunner', function (request, response) {
     console.log("We gaan een renner toevoegen");
-    
-    deelnemers.push(
-        // new Renner(nieuw.naam, nieuw.achternaam, nieuw.uren, nieuw.minuten, nieuw.gender)
-        new Renner(request.body.name, request.body.lastname, request.body.hours, request.body.minutes, request.body.gender)
-    )
     var nieuweDeelnemer = new Renner(request.body.name, request.body.lastname, request.body.hours, request.body.minutes, request.body.gender);
     
     // Sla de renner op in MongoDB
@@ -167,7 +123,6 @@ app.post('/addRunner', function (request, response) {
                 db.collection('renners').save(nieuweDeelnemer, (err, result) => {
                 if (err) return console.log(err)
                 console.log('saved to database')
-                res.setHeader('Content-Type', 'application/json');
                 response.end('{"message" : "Added Successfully", "status" : 200}. Naam toegevoegde deelnemer:' + deelnemers[deelnemers.length-1].naam);
             })
         })
