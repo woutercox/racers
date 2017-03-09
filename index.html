@@ -19,7 +19,11 @@
                     }
             };
             function getNewPage(url){
-                console.log(url);
+                var content = document.getElementById('content');
+                switch (url){
+                    case "male":
+                        content.innerHTML = '';
+                }
             }
         </script>
     </head>
