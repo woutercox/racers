@@ -69,8 +69,8 @@
                                     select.setAttribute('id', 'selectUpdate');
                                     select.onchange = function(){
                                         document.getElementById('form').setAttribute('action', 'http://localhost:8081/update/'+this.value);
-                                        var naam = document.getElementById('form').value.split(' ')[0];
-                                        var achternaam = document.getElementById('form').value.split(' ')[1];
+                                        document.getElementById('newName').setAttribute('placeholder', document.getElementById('form').value.split(' ')[0]);
+                                        document.getElementById('newLastName').setAttribute('placeholder', document.getElementById('form').value.split(' ')[1]);
 
                                     }
                                     var runners = JSON.parse(xml.responseText);
