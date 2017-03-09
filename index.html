@@ -49,7 +49,7 @@
                                             li.setAttribute('id', child._id);
                                             li.innerHTML = '<span>'+child.naam +' '+child.achternaam+'</span>';
                                             li.addEventListener('click', function(e){
-                                                deleteRunner(e);
+                                                deleteRunner(child._id, child.naam, child.achternaam);
                                             });
                                             ul.appendChild(li);
                                         }
@@ -61,9 +61,8 @@
                 }
             }
 
-            function deleteRunner(e){
-                var id = e.srcElement.getAttribute('id');
-                if (confirm('Are you sure you want to delete ' + e.srcElement.innerText+' ('+id+')?'))
+            function deleteRunner(id, name, lastname){
+                if (confirm('Are you sure you want to delete ' + name+' '+lastname+' ('+id+')?'))
                     {
                         var del = new XMLHttpRequest();
                         del.open('POST', 'http://localhost:8081/deleteRunner');
