@@ -42,15 +42,22 @@
                     {
                         var content = document.getElementById('content');
                         content.innerHTML = '';
-                        var runners = JSON.parse(xml.responseText);
-                        var ul = document.createElement('ul');
-                        for (var runner of runners)
+                        if (xml.getResponseHeader('content-type') == 'text/html')
                             {
-                                var li = document.createElement('li');
-                                li.innerHTML = runner.naam +' '+runner.achternaam+' ('+runner.gender+') heeft de race in '+runner.uren+' en '+runner.minuten+' gelopen.';
-                                ul.appendChild(li);
+                                content.innerHTML = xml.responseText;
                             }
-                        content.appendChild(ul);
+                        else if (xml.getResponseHeader('content-type') == 'application/json')
+                            {
+                                var runners = JSON.parse(xml.responseText);
+                                var ul = document.createElement('ul');
+                                for (var runner of runners)
+                                    {
+                                        var li = document.createElement('li');
+                                        li.innerHTML = runner.naam +' '+runner.achternaam+' ('+runner.gender+') heeft de race in '+runner.uren+' en '+runner.minuten+' gelopen.';
+                                        ul.appendChild(li);
+                                    }
+                                content.appendChild(ul);
+                            }
                     }
               }  
               xml.send();
