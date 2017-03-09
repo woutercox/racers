@@ -36,6 +36,7 @@ function toonRenners(callback, mongoQuery) {
         collection.find(mongoQuery).sort({uren: 1, minuten: 1}).toArray(function (err, docs) {
             if (!err) {
                 var result = JSON.stringify(docs);
+                console.log(docs);
                 callback(null, result);
             }
             else {
@@ -117,12 +118,12 @@ app.all('/*', function (req, res, next) {
 });
 
 app.get('/index.html', function(request, response) {
-    response.setHeader('content-type', 'text/html');
+    response.setHeader('Content-Type', 'text/html');
     response.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/pages/:page', function(request, response) {
-    response.setHeader('content-type', 'text/html');
+    response.setHeader('Content-Type', 'text/html');
     response.sendFile(path.join(__dirname + "/pages/" + request.params.page));
  });
 
@@ -130,12 +131,13 @@ app.get('/list', function(request, response) {
    toonRenners(function(foutjes, resultaat) {
         response.setHeader('Content-Type', 'application/json');
         response.send(resultaat);
-    });
+    }, {});
 });
 
 app.get('/list/gender/:q', function(request, response) {
   console.log('Er werd gesurft naar /list/gender/' + request.params.q);
      var mongoQuery = {gender: request.params.q };
+     
      toonRenners(function(foutjes, resultaat) {
         response.setHeader('Content-Type', 'application/json');
         response.send(resultaat);
@@ -156,19 +158,21 @@ app.get('/list/:voornaam/:naam', function(request, response) {
 app.post('/addRunner', function (request, response) {
     console.log("We gaan een renner toevoegen");
     
-    deelnemers.push(
-        // new Renner(nieuw.naam, nieuw.achternaam, nieuw.uren, nieuw.minuten, nieuw.gender)
-        new Renner(request.body.name, request.body.lastname, request.body.hours, request.body.minutes, request.body.gender)
-    )
-    var nieuweDeelnemer = new Renner(request.body.name, request.body.lastname, request.body.hours, request.body.minutes, request.body.gender);
+    // deelnemers.push(
+    //     // new Renner(nieuw.naam, nieuw.achternaam, nieuw.uren, nieuw.minuten, nieuw.gender)
+    //     new Renner(request.body.name, request.body.lastname, request.body.hours, request.body.minutes, request.body.gender)
+    // )
+
+    var nieuweDeelnemer = new Renner(request.body.name, request.body.lastname, request.body.hour, request.body.minutes, request.body.gender);
     
     // Sla de renner op in MongoDB
     mongoClient.connect(url, function (err, db) {
                 db.collection('renners').save(nieuweDeelnemer, (err, result) => {
                 if (err) return console.log(err)
                 console.log('saved to database')
-                res.setHeader('Content-Type', 'application/json');
-                response.end('{"message" : "Added Successfully", "status" : 200}. Naam toegevoegde deelnemer:' + deelnemers[deelnemers.length-1].naam);
+                db.close();
+                response.setHeader('Content-Type', 'application/json');
+                response.send("<p>Renner toegevoegd</p>");
             })
         })
 });
