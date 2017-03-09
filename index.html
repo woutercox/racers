@@ -52,7 +52,7 @@
                                             ul.appendChild(li);
                                         }
                                     content.appendChild(ul);
-                                    for (var lili of document.getElementById('ul'))
+                                    for (var lili of document.getElementById('ul').children)
                                         {
                                             lili.addEventListener('click', function(e){
                                                 deleteRunner(child._id, child.naam, child.achternaam);
