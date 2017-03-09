@@ -48,7 +48,7 @@
                                         {
                                             var li = document.createElement('li');
                                             li.innerHTML = '<span id="'+child._id+'"><a>'+child.naam +' '+child.achternaam+'</a></span>';
-                                            li.setAttribute('onclick', function(){deleteRunner(child._id, child.naam, child.lastname)});
+                                            li.setAttribute('onclick', 'function(){deleteRunner('+child._id+', '+child.naam+', '+child.lastname+'')}');
                                             ul.appendChild(li);
                                         }
                                     content.appendChild(ul);
