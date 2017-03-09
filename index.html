@@ -70,6 +70,7 @@
                     event.preventDefault();
                     var xml = new XMLHttpRequest();
                     xml.open('POST', 'http://localhost:8081/addRunner');
+                    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xml.onreadystatechange = function(){
                         if (xml.status == 200)
                             {
