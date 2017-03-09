@@ -67,6 +67,12 @@
                                     content.innerHTML = '';
                                     var select = document.createElement('select');
                                     select.setAttribute('id', 'selectUpdate');
+                                    select.onchange = function(){
+                                        document.getElementById('form').setAttribute('action', 'http://localhost:8081/update/'+this.value);
+                                        var naam = document.getElementById('form').value.split(' ')[0];
+                                        var achternaam = document.getElementById('form').value.split(' ')[1];
+
+                                    }
                                     var runners = JSON.parse(xml.responseText);
                                     for (var runner of runners)
                                         {
@@ -76,7 +82,7 @@
                                             select.appendChild(option);
                                         }
                                     content.appendChild(select);
-                                    content.appendChild()
+                                    content.appendChild('<form id="form" method="post"><input id="newName" type="text" name="nieuweNaam" placeholder="" class="form-control" /><br /><input type="text" id="newLastName" name="nieuweAchterNaam" placeholder="" class="form-control" /><br /><button class="btn btn-primary" type="submit">Update!</button></form>')
                                 }
                         }
                         xml.send();
