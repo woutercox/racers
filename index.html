@@ -13,7 +13,7 @@
                for (var a of document.getElementsByTagName('a'))
                     {
                         a.addEventListener('click', function(e){
-                            getNewPage(e.srcElement.getAttribute('url'));
+                            getNewPage(e.srcElement.getAttribute('url') || e.target.getAttribute('url'));
                         })
                     }
             };
@@ -48,13 +48,10 @@
                                             var li = document.createElement('li');
                                             li.setAttribute('delName', child.naam+'.'+child.achternaam);
                                             li.innerHTML = '<span>delete '+child.naam +' '+child.achternaam+'</span>';
+                                            li.addEventListener('click', deleteRunner);
                                             ul.appendChild(li);
                                         }
                                     content.appendChild(ul);
-                                    for (var lili of content.getElementsByClassName('li'))
-                                        {
-                                            lili.addEventListener('click', alert);
-                                        }
                                 }
                         }
                         xml.send();
