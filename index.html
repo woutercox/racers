@@ -19,7 +19,7 @@
                         })
                     }
                getNewPage(current);
-               setInterval(getNewPage(current), 1000); 
+               setInterval(function() {getNewPage(current)}, 10000); 
             };
             function getNewPage(url){
                 console.log('Pagina '+current+' opgevraagd')
@@ -119,12 +119,12 @@
                                     form.appendChild(nieuweAchterNaam);
                                     form.appendChild(btn);
 
-                                    content.appendChild(form)
+                                    content.appendChild(form);
+                                    
                                 }
                         }
                         xml.send();
                         current = 'update';
-                        getNewPage('update');
                         break;
                 }
             }

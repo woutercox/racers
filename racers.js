@@ -36,7 +36,6 @@ function toonRenners(callback, mongoQuery) {
         collection.find(mongoQuery).sort({uren: 1, minuten: 1}).toArray(function (err, docs) {
             if (!err) {
                 var result = JSON.stringify(docs);
-                console.log(docs);
                 callback(null, result);
             }
             else {
@@ -218,7 +217,7 @@ app.post('/update/:id', function(request, response) {
     var myObjectId = new ObjectID(request.params.id)
     var findQuery = {_id: myObjectId };
 
-    var updateQuery = {naam: request.body.nieuweNaam, achternaam: request.body.nieuweAchternaam };
+    var updateQuery = {$set: {naam: request.body.nieuweNaam, achternaam: request.body.nieuweAchternaam }};
     // updateRenner();
     updateRenner(function(foutjes, resultaat) {
         response.setHeader('Content-Type', 'application/json');
