@@ -20,10 +20,33 @@
             };
             function getNewPage(url){
                 var content = document.getElementById('content');
+                var newContent = '';
                 switch (url){
                     case "male":
-                        content.innerHTML = '';
+                        newContent = 'http://localhost:8081/list/gender/man';
+                        break;
+                    case 'female': 
+                        newContent = 'http://localhost:8081/list/gender/vrouw';
+                        break;
+                    case 'all':
+                        newContent = 'http://localhost:8081/list';
+                        break;
                 }
+              var xml = new XMLHttpRequest();
+              xml.open('GET', newContent);
+              xml.onreadystatechange = function(){
+                  if (xml.status==200 &&xml.readyState==4)
+                    {
+                        var content = document.getElementById('content');
+                        content.innerHTML = '';
+                        var runners = JSON.parse(xml.responseText);
+                        for (var runner of runners)
+                            {
+                                console.log(runner);
+                            }
+                    }
+              }  
+              xml.send();
             }
         </script>
     </head>
