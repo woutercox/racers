@@ -8,6 +8,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
             'use strict'
+            const link = 'http://localhost:8081';
             window.onload = init;
             function init(){
                for (var a of document.getElementsByTagName('a'))
@@ -22,20 +23,20 @@
                 var newContent = '';
                 switch (url){
                     case "male":
-                        loadRunner('http://localhost:8081/list/gender/male');
+                        loadRunner(link+'/list/gender/male');
                         break;
                     case 'female': 
-                        loadRunner('http://localhost:8081/list/gender/female');
+                        loadRunner(link+'/list/gender/female');
                         break;
                     case 'all':
-                        loadRunner('http://localhost:8081/list');
+                        loadRunner(link+'/list');
                         break;
                     case 'new':
-                        loadRunner('http://localhost:8081/pages/new.html');
+                        loadRunner(link+'/pages/new.html');
                         break;
                     case 'delete':
                         var xml =new XMLHttpRequest();
-                        xml.open('GET', 'http://localhost:8081/list');
+                        xml.open('GET', link+'/list');
                         xml.onreadystatechange = function(){
                             if (xml.status == 200 && xml.readyState == 4)
                                 {
@@ -59,7 +60,7 @@
                         break;
                     case 'update':
                         var xml =new XMLHttpRequest();
-                        xml.open('GET', 'http://localhost:8081/list');
+                        xml.open('GET', link+'/list');
                         xml.onreadystatechange = function(){
                             if (xml.status == 200 && xml.readyState == 4)
                                 {
@@ -68,9 +69,9 @@
                                     var select = document.createElement('select');
                                     select.setAttribute('id', 'selectUpdate');
                                     select.onchange = function(){
-                                        document.getElementById('form').setAttribute('action', 'http://localhost:8081/update/'+this.value);
-                                        document.getElementById('newName').setAttribute('placeholder', document.getElementById('selectUpdate').text.split(' ')[0]);
-                                        document.getElementById('newLastName').setAttribute('placeholder', document.getElementById('selectUpdate').text.split(' ')[1]);
+                                        document.getElementById('form').setAttribute('action', link+'/update/'+this.value);
+                                        document.getElementById('newName').setAttribute('placeholder', this.innerText.split(' ')[0]);
+                                        document.getElementById('newLastName').setAttribute('placeholder', this.innerText.split(' ')[1]);
 
                                     }
                                     var runners = JSON.parse(xml.responseText);
@@ -120,7 +121,7 @@
                 if (confirm('Are you sure you want to delete ' + name+' '+lastname+' ('+id+')?'))
                     {
                         var del = new XMLHttpRequest();
-                        del.open('DELETE', 'http://localhost:8081/deleteRunner/' + id);
+                        del.open('DELETE', link+'/deleteRunner/' + id);
                         del.onreadystatechange = function(){
                             if (del.status == 200 && del.readyState == 4)
                                 {
@@ -169,7 +170,7 @@
                 {
                     event.preventDefault();
                     var xml = new XMLHttpRequest();
-                    xml.open('POST', 'http://localhost:8081/addRunner');
+                    xml.open('POST', link+'/addRunner');
                     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xml.onreadystatechange = function(){
                         if (xml.status == 200)
