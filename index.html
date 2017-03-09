@@ -62,7 +62,7 @@
             }
 
             function deleteRunner(event){
-                varid = event.srcElement.getAttribute('id');
+                var id = event.srcElement.getAttribute('id');
                 if (confirm('Are you sure you want to delete' + event.srcElement.innerText+'?'))
                     {
                         var del = new XMLHttpRequest();
